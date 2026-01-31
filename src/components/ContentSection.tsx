@@ -51,7 +51,7 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
             });
 
         // Aktivnosti
-        fetch("http://localhost:8080/api/v1/activity")
+        fetch("http://localhost:8080/api/v1/activities")
             .then((res) => res.json())
             .then((data) => {
                 const list = Array.isArray(data) ? data : data.content;
@@ -70,8 +70,9 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
         fetch("http://localhost:8080/api/v1/kindergarten")
             .then((res) => res.json())
             .then((data) => {
-                console.log("Vrtići sa backend-a:", data); // 👈 vidi strukturu u konzoli
+                console.log("Vrtići sa backend-a:", data);
                 if (Array.isArray(data.content)) {
+                    console.log("Broj vrtića:", data.content.length); // 👈 dodatna provera
                     setKindergartens(data.content as Kindergarten[]);
                 } else {
                     setKindergartens([]);
@@ -81,6 +82,7 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                 console.error("Greška pri učitavanju vrtića:", err);
                 setKindergartens([]);
             });
+
     }, []);
 
 
@@ -102,9 +104,10 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                         {/* Kindergarten forma */}
                         {subOption === "vrtic" && (
                             <form
-                                onSubmit={async (e) => {
+                                onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
                                     e.preventDefault();
-                                    const formData = new FormData(e.currentTarget);
+                                    const form = e.currentTarget;
+                                    const formData = new FormData(form);
 
                                     const payload = {
                                         name: formData.get("name"),
@@ -128,6 +131,17 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                                         const data = await response.json();
                                         console.log("Uspešno sačuvan vrtić:", data);
                                         alert("Vrtić uspešno sačuvan!");
+                                        form.reset();
+
+                                        // 👇 odmah povuci novu listu da se dropdown osveži
+                                        await fetch("http://localhost:8080/api/v1/kindergarten")
+                                            .then((res) => res.json())
+                                            .then((freshData) => {
+                                                if (Array.isArray(freshData.content)) {
+                                                    setKindergartens(freshData.content as Kindergarten[]);
+                                                    console.log("Osvežena lista vrtića:", freshData.content);
+                                                }
+                                            });
                                     }
                                 }}
                             >
@@ -150,80 +164,80 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
 
 
                         {/* KindergartenAccount forma */}
-                    {subOption === "racun" && (
-                        <form
-                            onSubmit={async (e) => {
-                                e.preventDefault();
-                                const formData = new FormData(e.currentTarget);
+                        {subOption === "racun" && (
+                            <form
+                                onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
+                                    e.preventDefault();
+                                    const form = e.currentTarget; // sigurno je <form>
+                                    const formData = new FormData(form);
 
-                                const payload = {
-                                    bank_name: formData.get("bankName"),
-                                    account_number: formData.get("accountNumber"),
-                                    pib: formData.get("pib"),
-                                    identification_number: formData.get("identificationNumber"),
-                                    activity_code: formData.get("activityCode")
-                                        ? Number(formData.get("activityCode"))
-                                        : null,
-                                    kindergarten: { id: Number(formData.get("kindergartenId")) }, // 👈 veza na vrtić
-                                };
+                                    const payload = {
+                                        bank_name: formData.get("bankName"),
+                                        account_number: formData.get("accountNumber"),
+                                        pib: formData.get("pib"),
+                                        identification_number: formData.get("identificationNumber"),
+                                        activity_code: formData.get("activityCode")
+                                            ? Number(formData.get("activityCode"))
+                                            : null,
+                                        kindergarten: { id: Number(formData.get("kindergartenId")) }, // 👈 veza na vrtić
+                                    };
 
+                                    console.log("Payload Account:", payload);
 
-                                console.log("Payload Account:", payload);
+                                    const response = await fetch("http://localhost:8080/api/v1/kindergarten-account", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify(payload),
+                                    });
 
-                                const response = await fetch("http://localhost:8080/api/v1/kindergarten-account", {
-                                    method: "POST",
-                                    headers: {"Content-Type": "application/json"},
-                                    body: JSON.stringify(payload),
-                                });
+                                    if (!response.ok) {
+                                        const errorText = await response.text();
+                                        alert("Greška pri čuvanju računa: " + errorText);
+                                    } else {
+                                        const data = await response.json();
+                                        console.log("Uspešno sačuvan račun:", data);
+                                        alert("Račun uspešno sačuvan!");
+                                        form.reset(); // 👈 sigurno resetuje formu
+                                    }
+                                }}
+                            >
+                                <label>Naziv banke</label>
+                                <input type="text" name="bankName" required />
 
-                                if (!response.ok) {
-                                    const errorText = await response.text();
-                                    alert("Greška pri čuvanju računa: " + errorText);
-                                } else {
-                                    const data = await response.json();
-                                    console.log("Uspešno sačuvan račun:", data);
-                                    alert("Račun uspešno sačuvan!");
-                                }
-                            }}
-                        >
-                            <label>Naziv banke</label>
-                            <input type="text" name="bankName" required/>
+                                <label>Broj računa</label>
+                                <input type="text" name="accountNumber" required />
 
-                            <label>Broj računa</label>
-                            <input type="text" name="accountNumber" required/>
+                                <label>PIB</label>
+                                <input type="text" name="pib" placeholder="9 cifara" required />
 
-                            <label>PIB</label>
-                            <input type="text" name="pib" placeholder="9 cifara" required/>
+                                <label>Matični broj</label>
+                                <input type="text" name="identificationNumber" required />
 
-                            <label>Matični broj</label>
-                            <input type="text" name="identificationNumber" required/>
+                                <label>Šifra delatnosti</label>
+                                <input type="number" name="activityCode" />
 
-                            <label>Šifra delatnosti</label>
-                            <input type="number" name="activityCode"/>
+                                <label>Vrtić</label>
+                                <select name="kindergartenId" required>
+                                    <option value="">Izaberi vrtić</option>
+                                    {kindergartens.map((k) => (
+                                        <option key={k.id} value={k.id}>
+                                            {k.name}
+                                        </option>
+                                    ))}
+                                </select>
 
-                            <label>Vrtić</label>
-                            <select name="kindergartenId" required>
-                                <option value="">Izaberi vrtić</option>
-                                {kindergartens.map((k) => (
-                                    <option key={k.id} value={k.id}>
-                                        {k.name}
-                                    </option>
-                                ))}
-                            </select>
-
-
-
-                            <button type="submit">Sačuvaj račun</button>
-                        </form>
-                    )}
+                                <button type="submit">Sačuvaj račun</button>
+                            </form>
+                        )}
 
 
                         {/* Group forma */}
                         {subOption === "grupe" && (
                             <form
-                                onSubmit={async (e) => {
+                                onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
                                     e.preventDefault();
-                                    const formData = new FormData(e.currentTarget);
+                                    const form = e.currentTarget; // sigurno je <form>
+                                    const formData = new FormData(form);
 
                                     const payload = {
                                         name: formData.get("name"),
@@ -247,6 +261,7 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                                         const data = await response.json();
                                         console.log("Uspešno sačuvana grupa:", data);
                                         alert("Grupa uspešno sačuvana!");
+                                        form.reset(); // 👈 sigurno resetuje formu
                                     }
                                 }}
                             >
@@ -270,12 +285,14 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                         )}
 
 
+
                         {/* Activity forma */}
                         {subOption === "aktivnost" && (
                             <form
-                                onSubmit={async (e) => {
+                                onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
                                     e.preventDefault();
-                                    const formData = new FormData(e.currentTarget);
+                                    const form = e.currentTarget; // sigurno je <form>
+                                    const formData = new FormData(form);
 
                                     const payload = {
                                         name: formData.get("name"),
@@ -298,6 +315,7 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                                         const data = await response.json();
                                         console.log("Uspešno sačuvana aktivnost:", data);
                                         alert("Aktivnost uspešno sačuvana!");
+                                        form.reset(); // 👈 sigurno resetuje formu
                                     }
                                 }}
                             >
@@ -316,6 +334,7 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                                 <button type="submit">Sačuvaj aktivnost</button>
                             </form>
                         )}
+
 
 
                     </div>
