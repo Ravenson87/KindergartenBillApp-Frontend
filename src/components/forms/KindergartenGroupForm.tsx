@@ -1,5 +1,3 @@
-// src/components/forms/KindergartenGroupForm.tsx
-
 import { useState } from "react";
 import { Group, Kindergarten } from "../../types";
 
@@ -25,15 +23,15 @@ export default function KindergartenGroupForm({ groups }: KindergartenGroupFormP
             if (res.ok) {
                 const data: Kindergarten = await res.json();
                 setKindergarten(data);
-                console.log("Sve grupe iz baze:", groups);
-                console.log("Grupe u vrtiću:", data.groups);
-                // izdvoj ID-jeve grupa koje su već dodate
+
                 const existingIds = new Set(
                     (data.groups ?? []).map((g: Group) => g.id)
                 );
 
-                // filtriraj samo one koje nisu dodate
-                const notAdded = groups.filter((g) => !existingIds.has(g.id));
+                // filtriraj samo one koje nisu dodate i koje su aktivne
+                const notAdded = groups.filter(
+                    (g) => !existingIds.has(g.id) && g.active
+                );
                 setAvailableGroups(notAdded);
                 setMessage(null);
             } else {
@@ -51,7 +49,7 @@ export default function KindergartenGroupForm({ groups }: KindergartenGroupFormP
         }
     };
 
-    const toggleGroup = (id: number) => {
+const toggleGroup = (id: number) => {
         setSelectedIds((prev) =>
             prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
         );

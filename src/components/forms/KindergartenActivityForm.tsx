@@ -28,6 +28,7 @@ export default function KindergartenActivityForm({ activities }: Props) {
                     (data.activities ?? []).map((a: Activity) => a.id)
                 );
 
+                // filtriraj samo one koje nisu dodate
                 const notAdded = activities.filter((a) => !existingIds.has(a.id));
                 setAvailableActivities(notAdded);
                 setMessage(null);
@@ -99,7 +100,6 @@ export default function KindergartenActivityForm({ activities }: Props) {
                     value={kindergartenName}
                     onChange={(e) => setKindergartenName(e.target.value)}
                 />
-                {/* Dugme za pretragu sa CSS klasom */}
                 <button
                     type="button"
                     className="find-kindergarten"
@@ -128,19 +128,28 @@ export default function KindergartenActivityForm({ activities }: Props) {
                         <p>Sve aktivnosti su već dodate ovom vrtiću.</p>
                     ) : (
                         <div className="activity-list">
+                            {/* ako postoji bar jedna neaktivna aktivnost, obavesti korisnika */}
+                            {availableActivities.some((a) => !a.status) && (
+                                <p className="inactive-warning">
+                                    ⚠️ Neke aktivnosti nisu aktivne, ali ih i dalje možete dodati.
+                                </p>
+                            )}
+
                             {availableActivities.map((a) => (
-                                <label key={a.id}>
+                                <label
+                                    key={a.id}
+                                    style={{ color: a.status ? "inherit" : "gray" }}
+                                >
                                     <input
                                         type="checkbox"
                                         checked={selectedIds.includes(a.id)}
                                         onChange={() => toggleActivity(a.id)}
                                     />
-                                    {a.name}
+                                    {a.name} {!a.status && "(neaktivna)"}
                                 </label>
                             ))}
                         </div>
                     )}
-                    {/* Dugme za dodavanje sa CSS klasom */}
                     <button
                         type="button"
                         className="add-activities"

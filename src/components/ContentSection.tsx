@@ -13,7 +13,14 @@ type ContentSectionProps = {
     vrticOption: "kreiraj" | "pretrazi";
 };
 
-type SubOption = "vrtic" | "racun" | "grupe" | "aktivnost" | "dodajAktivnosti" | "dodajGrupe" | null;
+type SubOption =
+    | "vrtic"
+    | "racun"
+    | "grupe"
+    | "aktivnost"
+    | "dodajAktivnosti"
+    | "dodajGrupe"
+    | null;
 
 export default function ContentSection({ activeTab, vrticOption }: ContentSectionProps) {
     const [subOption, setSubOption] = useState<SubOption>(null);
@@ -72,16 +79,26 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                             <button onClick={() => setSubOption("aktivnost")}>🎨 Aktivnosti</button>
                             <button onClick={() => setSubOption("dodajAktivnosti")}>➕ Dodaj aktivnosti vrtiću</button>
                             <button onClick={() => setSubOption("dodajGrupe")}>➕ Dodaj grupe vrtiću</button>
-
                         </div>
 
-                        {subOption === "vrtic" && <KindergartenForm setKindergartens={setKindergartens} />}
-                        {subOption === "racun" && <KindergartenAccountForm kindergartens={kindergartens} />}
-                        {subOption === "grupe" && <GroupForm />}
-                        {subOption === "aktivnost" && <ActivityForm />}
-                        {subOption === "dodajAktivnosti" && <KindergartenActivityForm activities={activities} />}
-                        {subOption === "dodajGrupe" && <KindergartenGroupForm groups={groups} />}
-
+                        {subOption === "vrtic" && (
+                            <KindergartenForm setKindergartens={setKindergartens} />
+                        )}
+                        {subOption === "racun" && (
+                            <KindergartenAccountForm kindergartens={kindergartens} />
+                        )}
+                        {subOption === "grupe" && (
+                            <GroupForm setGroups={setGroups} />
+                        )}
+                        {subOption === "aktivnost" && (
+                            <ActivityForm setActivities={setActivities} />
+                        )}
+                        {subOption === "dodajAktivnosti" && (
+                            <KindergartenActivityForm activities={activities} />
+                        )}
+                        {subOption === "dodajGrupe" && (
+                            <KindergartenGroupForm groups={groups} />
+                        )}
                     </div>
                 )}
 

@@ -1,4 +1,10 @@
-export default function ActivityForm() {
+import { Activity } from "../../types";
+
+type ActivityFormProps = {
+    setActivities: React.Dispatch<React.SetStateAction<Activity[]>>;
+};
+
+export default function ActivityForm({ setActivities }: ActivityFormProps) {
     return (
         <form
             onSubmit={async (e) => {
@@ -9,7 +15,7 @@ export default function ActivityForm() {
                 const payload = {
                     name: formData.get("name"),
                     price: formData.get("price") ? Number(formData.get("price")) : null,
-                    status: formData.get("status") === "true",
+                    status: formData.get("status") === "true", // koristimo "status" jer backend to očekuje
                 };
 
                 const response = await fetch("http://localhost:8080/api/v1/activities", {
@@ -19,6 +25,10 @@ export default function ActivityForm() {
                 });
 
                 if (response.ok) {
+                    const createdActivity: Activity = await response.json();
+                    // odmah dodaj novu aktivnost u state u parent komponenti
+                    setActivities((prev) => [...prev, createdActivity]);
+
                     alert("Aktivnost uspešno sačuvana!");
                     form.reset();
                 } else {

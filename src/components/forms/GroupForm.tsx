@@ -1,4 +1,10 @@
-export default function GroupForm() {
+import { Group } from "../../types";
+
+type GroupFormProps = {
+    setGroups: React.Dispatch<React.SetStateAction<Group[]>>;
+};
+
+export default function GroupForm({ setGroups }: GroupFormProps) {
     return (
         <form
             onSubmit={async (e) => {
@@ -20,6 +26,11 @@ export default function GroupForm() {
                 });
 
                 if (response.ok) {
+                    const createdGroup: Group = await response.json();
+
+                    // odmah dodaj novu grupu u state u parent komponenti
+                    setGroups((prev) => [...prev, createdGroup]);
+
                     alert("Grupa uspešno sačuvana!");
                     form.reset();
                 } else {
