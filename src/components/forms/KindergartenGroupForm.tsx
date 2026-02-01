@@ -1,14 +1,16 @@
-import { useState } from "react";
-import { Activity, Kindergarten } from "../../types";
+// src/components/forms/KindergartenGroupForm.tsx
 
-type Props = {
-    activities: Activity[];
+import { useState } from "react";
+import { Group, Kindergarten } from "../../types";
+
+type KindergartenGroupFormProps = {
+    groups: Group[];
 };
 
-export default function KindergartenActivityForm({ activities }: Props) {
+export default function KindergartenGroupForm({ groups }: KindergartenGroupFormProps) {
     const [kindergartenName, setKindergartenName] = useState("");
     const [kindergarten, setKindergarten] = useState<Kindergarten | null>(null);
-    const [availableActivities, setAvailableActivities] = useState<Activity[]>([]);
+    const [availableGroups, setAvailableGroups] = useState<Group[]>([]);
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
@@ -23,45 +25,48 @@ export default function KindergartenActivityForm({ activities }: Props) {
             if (res.ok) {
                 const data: Kindergarten = await res.json();
                 setKindergarten(data);
-
+                console.log("Sve grupe iz baze:", groups);
+                console.log("Grupe u vrtiću:", data.groups);
+                // izdvoj ID-jeve grupa koje su već dodate
                 const existingIds = new Set(
-                    (data.activities ?? []).map((a: Activity) => a.id)
+                    (data.groups ?? []).map((g: Group) => g.id)
                 );
 
-                const notAdded = activities.filter((a) => !existingIds.has(a.id));
-                setAvailableActivities(notAdded);
+                // filtriraj samo one koje nisu dodate
+                const notAdded = groups.filter((g) => !existingIds.has(g.id));
+                setAvailableGroups(notAdded);
                 setMessage(null);
             } else {
                 setMessage("Vrtić sa tim imenom ne postoji!");
                 setKindergarten(null);
-                setAvailableActivities([]);
+                setAvailableGroups([]);
             }
         } catch (err) {
             console.error("Greška pri povezivanju sa serverom:", err);
             setMessage("Greška pri povezivanju sa serverom");
             setKindergarten(null);
-            setAvailableActivities([]);
+            setAvailableGroups([]);
         } finally {
             setLoading(false);
         }
     };
 
-    const toggleActivity = (id: number) => {
+    const toggleGroup = (id: number) => {
         setSelectedIds((prev) =>
             prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
         );
     };
 
-    const addActivities = async () => {
+    const addGroups = async () => {
         if (!kindergarten) return;
 
         try {
             setLoading(true);
-            setMessage("Dodavanje aktivnosti...");
-            const payload = selectedIds.map((id) => ({ activitiesId: id }));
+            setMessage("Dodavanje grupa...");
+            const payload = selectedIds.map((id) => ({ groupId: id }));
 
             const res = await fetch(
-                `http://localhost:8080/api/v1/kindergarten/${kindergarten.id}/activities`,
+                `http://localhost:8080/api/v1/kindergarten/${kindergarten.id}/groups`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -70,27 +75,27 @@ export default function KindergartenActivityForm({ activities }: Props) {
             );
 
             if (res.ok) {
-                setMessage("Aktivnosti uspešno dodate!");
+                setMessage("Grupe uspešno dodate!");
                 // resetuj formu
                 setKindergarten(null);
                 setKindergartenName("");
-                setAvailableActivities([]);
+                setAvailableGroups([]);
                 setSelectedIds([]);
             } else {
                 const errorText = await res.text();
-                setMessage("Greška pri dodavanju aktivnosti: " + errorText);
+                setMessage("Greška pri dodavanju grupa: " + errorText);
             }
         } catch (err) {
-            console.error("Greška pri dodavanju aktivnosti:", err);
-            setMessage("Greška pri dodavanju aktivnosti");
+            console.error("Greška pri dodavanju grupa:", err);
+            setMessage("Greška pri dodavanju grupa");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="activity-form-container">
-            <h3>Dodaj aktivnosti vrtiću</h3>
+        <div className="group-form-container">
+            <h3>Dodaj grupe vrtiću</h3>
 
             <form>
                 <label>Ime vrtića</label>
@@ -99,7 +104,6 @@ export default function KindergartenActivityForm({ activities }: Props) {
                     value={kindergartenName}
                     onChange={(e) => setKindergartenName(e.target.value)}
                 />
-                {/* Dugme za pretragu sa CSS klasom */}
                 <button
                     type="button"
                     className="find-kindergarten"
@@ -112,7 +116,7 @@ export default function KindergartenActivityForm({ activities }: Props) {
 
             {message && (
                 <div
-                    className={`activity-message ${
+                    className={`group-message ${
                         message.includes("uspešno") ? "success" :
                             message.includes("Greška") ? "error" : ""
                     }`}
@@ -123,31 +127,30 @@ export default function KindergartenActivityForm({ activities }: Props) {
 
             {kindergarten && (
                 <div>
-                    <h5>Dostupne aktivnosti za dodavanje:</h5>
-                    {availableActivities.length === 0 ? (
-                        <p>Sve aktivnosti su već dodate ovom vrtiću.</p>
+                    <h5>Dostupne grupe za dodavanje:</h5>
+                    {availableGroups.length === 0 ? (
+                        <p>Sve grupe su već dodate ovom vrtiću.</p>
                     ) : (
-                        <div className="activity-list">
-                            {availableActivities.map((a) => (
-                                <label key={a.id}>
+                        <div className="group-list">
+                            {availableGroups.map((g) => (
+                                <label key={g.id}>
                                     <input
                                         type="checkbox"
-                                        checked={selectedIds.includes(a.id)}
-                                        onChange={() => toggleActivity(a.id)}
+                                        checked={selectedIds.includes(g.id)}
+                                        onChange={() => toggleGroup(g.id)}
                                     />
-                                    {a.name}
+                                    {g.name}
                                 </label>
                             ))}
                         </div>
                     )}
-                    {/* Dugme za dodavanje sa CSS klasom */}
                     <button
                         type="button"
-                        className="add-activities"
-                        onClick={addActivities}
+                        className="add-groups"
+                        onClick={addGroups}
                         disabled={selectedIds.length === 0 || loading}
                     >
-                        {loading ? "Dodavanje..." : "Dodaj izabrane aktivnosti"}
+                        {loading ? "Dodavanje..." : "Dodaj izabrane grupe"}
                     </button>
                 </div>
             )}

@@ -15,7 +15,7 @@ export default function KindergartenForm({ setKindergartens }: Props) {
                 const payload = {
                     name: formData.get("name"),
                     address: formData.get("address"),
-                    phone_number: formData.get("phoneNumber"),
+                    phoneNumber: formData.get("phoneNumber"),
                     email: formData.get("email"),
                 };
 

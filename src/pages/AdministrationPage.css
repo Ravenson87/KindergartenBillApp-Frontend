@@ -191,12 +191,12 @@ form button:hover {
     transform: scale(1.2);
 }
 
-/* Dugme za dodavanje */
-.activity-form-container button {
+/* Dugme za pretragu vrtića */
+.activity-form-container button.find-kindergarten {
     padding: 0.6rem 1.2rem;
     border: none;
     border-radius: 6px;
-    background: #4caf50;
+    background: #2196f3; /* plava */
     color: #fff;
     font-size: 1rem;
     font-weight: 600;
@@ -204,8 +204,25 @@ form button:hover {
     transition: background 0.3s ease;
 }
 
-.activity-form-container button:hover {
-    background: #43a047;
+.activity-form-container button.find-kindergarten:hover {
+    background: #1976d2; /* tamnija plava na hover */
+}
+
+/* Dugme za dodavanje aktivnosti */
+.activity-form-container button.add-activities {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    background: #81c784; /* svetlija zelena */
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.activity-form-container button.add-activities:hover {
+    background: #66bb6a; /* malo tamnija zelena na hover */
 }
 
 /* Poruke (uspeh / greška) */
@@ -224,6 +241,103 @@ form button:hover {
 }
 
 .activity-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Kontejner za formu dodavanja grupa */
+.group-form-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Naslov forme */
+.group-form-container h3 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Lista dostupnih grupa */
+.group-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.group-list label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+}
+
+.group-list input[type="checkbox"] {
+    accent-color: #ff9800; /* narandžasta boja checkbox-a */
+    transform: scale(1.2);
+}
+
+/* Dugme za pretragu vrtića */
+.group-form-container button.find-kindergarten {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    background: #2196f3; /* plava */
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.group-form-container button.find-kindergarten:hover {
+    background: #1976d2;
+}
+
+/* Dugme za dodavanje grupa */
+.group-form-container button.add-groups {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    background: #ff9800; /* narandžasta */
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.group-form-container button.add-groups:hover {
+    background: #f57c00; /* tamnija narandžasta na hover */
+}
+
+/* Poruke (uspeh / greška) */
+.group-message {
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.group-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.group-message.error {
     background: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;

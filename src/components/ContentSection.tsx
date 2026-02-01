@@ -4,6 +4,8 @@ import KindergartenAccountForm from "./forms/KindergartenAccountForm";
 import GroupForm from "./forms/GroupForm";
 import ActivityForm from "./forms/ActivityForm";
 import KindergartenActivityForm from "./forms/KindergartenActivityForm";
+import KindergartenGroupForm from "./forms/KindergartenGroupForm";
+
 import { Kindergarten, Group, Activity, PageResponse } from "../types";
 
 type ContentSectionProps = {
@@ -11,7 +13,7 @@ type ContentSectionProps = {
     vrticOption: "kreiraj" | "pretrazi";
 };
 
-type SubOption = "vrtic" | "racun" | "grupe" | "aktivnost" | "dodajAktivnosti" | null;
+type SubOption = "vrtic" | "racun" | "grupe" | "aktivnost" | "dodajAktivnosti" | "dodajGrupe" | null;
 
 export default function ContentSection({ activeTab, vrticOption }: ContentSectionProps) {
     const [subOption, setSubOption] = useState<SubOption>(null);
@@ -69,6 +71,8 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                             <button onClick={() => setSubOption("grupe")}>👶 Grupe</button>
                             <button onClick={() => setSubOption("aktivnost")}>🎨 Aktivnosti</button>
                             <button onClick={() => setSubOption("dodajAktivnosti")}>➕ Dodaj aktivnosti vrtiću</button>
+                            <button onClick={() => setSubOption("dodajGrupe")}>➕ Dodaj grupe vrtiću</button>
+
                         </div>
 
                         {subOption === "vrtic" && <KindergartenForm setKindergartens={setKindergartens} />}
@@ -76,6 +80,8 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                         {subOption === "grupe" && <GroupForm />}
                         {subOption === "aktivnost" && <ActivityForm />}
                         {subOption === "dodajAktivnosti" && <KindergartenActivityForm activities={activities} />}
+                        {subOption === "dodajGrupe" && <KindergartenGroupForm groups={groups} />}
+
                     </div>
                 )}
 
