@@ -1,4 +1,4 @@
-import { Activity } from "../../types";
+import { Activity } from "../../../types";
 
 type ActivityFormProps = {
     setActivities: React.Dispatch<React.SetStateAction<Activity[]>>;

@@ -1,4 +1,4 @@
-import { Kindergarten } from "../../types";
+import { Kindergarten } from "../../../types";
 
 type Props = {
     kindergartens: Kindergarten[];

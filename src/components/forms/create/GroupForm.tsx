@@ -1,4 +1,4 @@
-import { Group } from "../../types";
+import { Group } from "../../../types";
 
 type GroupFormProps = {
     setGroups: React.Dispatch<React.SetStateAction<Group[]>>;

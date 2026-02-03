@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Activity, Kindergarten } from "../../types";
+import { Activity, Kindergarten } from "../../../types";
 
 type Props = {
     activities: Activity[];

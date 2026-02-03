@@ -1,12 +1,20 @@
 import { useState, useEffect } from "react";
-import KindergartenForm from "./forms/KindergartenForm";
-import KindergartenAccountForm from "./forms/KindergartenAccountForm";
-import GroupForm from "./forms/GroupForm";
-import ActivityForm from "./forms/ActivityForm";
-import KindergartenActivityForm from "./forms/KindergartenActivityForm";
-import KindergartenGroupForm from "./forms/KindergartenGroupForm";
 
-import { Kindergarten, Group, Activity, PageResponse } from "../types";
+import KindergartenForm from "./forms/create/KindergartenForm";
+import KindergartenAccountForm from "./forms/create/KindergartenAccountForm";
+import GroupForm from "./forms/create/GroupForm";
+import ActivityForm from "./forms/create/ActivityForm";
+import KindergartenActivityForm from "./forms/create/KindergartenActivityForm";
+import KindergartenGroupForm from "./forms/create/KindergartenGroupForm";
+
+import KindergartenSearchAndUpdateForm from "./forms/search/KindergartenSearchAndUpdateForm";
+import KindergartenAccountSearchForm from "./forms/search/KindergartenAccountSearchAndUpdateForm";
+import GroupSearchForm from "./forms/search/GroupSearchAndUpdateForm";
+import ActivitySearchForm from "./forms/search/ActivitySearchAndUpdateForm";
+import KindergartenActivitySearchForm from "./forms/search/KindergartenActivitySearchAndUpdateForm";
+import KindergartenGroupSearchForm from "./forms/search/KindergartenGroupSearchAndUpdateForm";
+
+import { Kindergarten, Group, Activity, KindergartenAccount, PageResponse } from "../types";
 
 type ContentSectionProps = {
     activeTab: "vrtic" | "polaznici";
@@ -28,6 +36,7 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
     const [groups, setGroups] = useState<Group[]>([]);
     const [activities, setActivities] = useState<Activity[]>([]);
     const [kindergartens, setKindergartens] = useState<Kindergarten[]>([]);
+    const [accounts, setAccounts] = useState<KindergartenAccount[]>([]);
 
     useEffect(() => {
         // Grupe
@@ -105,7 +114,36 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                 {vrticOption === "pretrazi" && (
                     <div>
                         <h4>Pretraži vrtiće</h4>
-                        <p>Ovde ide tabela/lista sa podacima</p>
+                        <div className="vrtic-submenu">
+                            <button onClick={() => setSubOption("vrtic")}>🏫 Vrtić</button>
+                            <button onClick={() => setSubOption("racun")}>💳 Račun vrtića</button>
+                            <button onClick={() => setSubOption("grupe")}>👶 Grupe</button>
+                            <button onClick={() => setSubOption("aktivnost")}>🎨 Aktivnosti</button>
+                            <button onClick={() => setSubOption("dodajAktivnosti")}>🔍 Pretraži aktivnosti vrtića</button>
+                            <button onClick={() => setSubOption("dodajGrupe")}>🔍 Pretraži grupe vrtića</button>
+                        </div>
+
+                        {subOption === "vrtic" && (
+                            <KindergartenSearchAndUpdateForm
+                                kindergartens={kindergartens}
+                                setKindergartens={setKindergartens}
+                            />
+                        )}
+                        {subOption === "racun" && (
+                            <KindergartenAccountSearchForm accounts={accounts} setAccounts={setAccounts} />
+                        )}
+                        {subOption === "grupe" && (
+                            <GroupSearchForm groups={groups} />
+                        )}
+                        {subOption === "aktivnost" && (
+                            <ActivitySearchForm activities={activities} />
+                        )}
+                        {subOption === "dodajAktivnosti" && (
+                            <KindergartenActivitySearchForm activities={activities} />
+                        )}
+                        {subOption === "dodajGrupe" && (
+                            <KindergartenGroupSearchForm groups={groups} />
+                        )}
                     </div>
                 )}
             </div>

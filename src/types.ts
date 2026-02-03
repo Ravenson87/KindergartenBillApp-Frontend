@@ -33,3 +33,16 @@ export type Kindergarten = {
     activities: Activity[]; // uvek niz (makar prazan)
     groups: Group[];        // uvek niz (makar prazan)
 };
+
+export type KindergartenAccount = {
+    id: number;
+    bank_name: string;
+    account_number: string;
+    pib: string;
+    identification_number: string;
+    activity_code?: number;
+    kindergarten: { id: number; name?: string };
+};
+
+
+

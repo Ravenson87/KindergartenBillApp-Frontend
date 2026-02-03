@@ -342,3 +342,321 @@ form button:hover {
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* poluprovidna pozadina */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* da bude iznad svega */
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.modal-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-actions button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.modal-actions button:first-child {
+    background: #4caf50;
+    color: #fff;
+}
+
+.modal-actions button:first-child:hover {
+    background: #43a047;
+}
+
+.modal-actions button:last-child {
+    background: #f44336;
+    color: #fff;
+}
+
+.modal-actions button:last-child:hover {
+    background: #d32f2f;
+}
+
+/* Tabela */
+.kindergarten-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.kindergarten-table th,
+.kindergarten-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.kindergarten-table th {
+    background-color: #f4f4f4;
+    text-align: left;
+}
+
+/* Paginacija */
+.pagination {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background: #2196f3;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.pagination button:hover {
+    background: #1976d2;
+}
+
+.pagination span {
+    font-weight: bold;
+    color: #333;
+}
+/* Polja za pretragu */
+.search-fields {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.search-fields select,
+.search-fields input {
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #fafafa;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-fields select:focus,
+.search-fields input:focus {
+    border-color: #4caf50;
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
+}
+
+/* Dugmići Pretraži i Resetuj */
+.search-fields button {
+    padding: 0.6rem 1.4rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.search-fields button:first-of-type {
+    background: #2196f3; /* plava */
+    color: #fff;
+}
+
+.search-fields button:first-of-type:hover {
+    background: #1976d2;
+    transform: scale(1.05);
+}
+
+.search-fields button:last-of-type {
+    background: #ff9800; /* narandžasta */
+    color: #fff;
+}
+
+.search-fields button:last-of-type:hover {
+    background: #f57c00;
+    transform: scale(1.05);
+}
+
+/* Tabela */
+.kindergarten-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.kindergarten-table th,
+.kindergarten-table td {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.kindergarten-table th {
+    background: linear-gradient(135deg, #64b5f6, #2196f3);
+    color: #fff;
+    font-weight: 600;
+}
+
+.kindergarten-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.kindergarten-table tr:hover {
+    background: #f1f1f1;
+}
+
+/* Dugmići Update i Delete */
+.kindergarten-table button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-right: 0.5rem;
+}
+
+.kindergarten-table button:hover {
+    transform: translateY(-2px);
+}
+
+.kindergarten-table button:first-of-type {
+    background: #4caf50; /* zelena */
+    color: #fff;
+}
+
+.kindergarten-table button:first-of-type:hover {
+    background: #43a047;
+}
+
+.kindergarten-table button:last-of-type {
+    background: #f44336; /* crvena */
+    color: #fff;
+}
+
+.kindergarten-table button:last-of-type:hover {
+    background: #d32f2f;
+}
+
+/* Modal */
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 450px;
+    max-width: 90%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    font-family: 'Playfair Display', serif;
+}
+
+.modal-content h4 {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.modal-content label {
+    font-weight: 600;
+    color: #333;
+    margin-top: 0.5rem;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 0.6rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #fafafa;
+    transition: border-color 0.3s;
+}
+
+.modal-content input:focus {
+    border-color: #2196f3;
+    outline: none;
+    background: #fff;
+}
+
+.modal-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.modal-actions button {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.modal-actions button:first-child {
+    background: #4caf50;
+    color: #fff;
+}
+
+.modal-actions button:first-child:hover {
+    background: #43a047;
+}
+
+.modal-actions button:last-child {
+    background: #f44336;
+    color: #fff;
+}
+
+.modal-actions button:last-child:hover {
+    background: #d32f2f;
+}
+
+.error-popup {
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    background: #fff3cd;   /* svetlo žuta */
+    color: #856404;        /* tamno žuta/braon tekst */
+    border: 1px solid #ffeeba;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;              /* razmak između dugmića */
+    justify-content: center; /* centriraj dugmiće u ćeliji */
+}
+
+.actions button {
+    flex: 1;                /* oba dugmeta iste širine */
+}
+

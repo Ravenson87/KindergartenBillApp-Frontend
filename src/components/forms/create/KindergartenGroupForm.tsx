@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Group, Kindergarten } from "../../types";
+import { Group, Kindergarten } from "../../../types";
 
 type KindergartenGroupFormProps = {
     groups: Group[];
