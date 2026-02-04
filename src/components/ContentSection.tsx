@@ -9,8 +9,8 @@ import KindergartenGroupForm from "./forms/create/KindergartenGroupForm";
 
 import KindergartenSearchAndUpdateForm from "./forms/search/KindergartenSearchAndUpdateForm";
 import KindergartenAccountSearchForm from "./forms/search/KindergartenAccountSearchAndUpdateForm";
-import GroupSearchForm from "./forms/search/GroupSearchAndUpdateForm";
-import ActivitySearchForm from "./forms/search/ActivitySearchAndUpdateForm";
+import GroupSearchAndUpdateForm from "./forms/search/GroupSearchAndUpdateForm";
+import ActivitySearchAndUpdateForm from "./forms/search/ActivitySearchAndUpdateForm"; // ✅ dodato
 import KindergartenActivitySearchForm from "./forms/search/KindergartenActivitySearchAndUpdateForm";
 import KindergartenGroupSearchForm from "./forms/search/KindergartenGroupSearchAndUpdateForm";
 
@@ -133,13 +133,20 @@ export default function ContentSection({ activeTab, vrticOption }: ContentSectio
                             <KindergartenAccountSearchForm accounts={accounts} setAccounts={setAccounts} />
                         )}
                         {subOption === "grupe" && (
-                            <GroupSearchForm groups={groups} />
+                            <GroupSearchAndUpdateForm groups={groups} setGroups={setGroups} />
                         )}
+
                         {subOption === "aktivnost" && (
-                            <ActivitySearchForm activities={activities} />
+                            <ActivitySearchAndUpdateForm
+                                activities={activities}
+                                setActivities={setActivities}
+                            />
                         )}
                         {subOption === "dodajAktivnosti" && (
-                            <KindergartenActivitySearchForm activities={activities} />
+                            <KindergartenActivitySearchForm
+                                activities={activities}
+                                setActivities={setActivities}
+                            />
                         )}
                         {subOption === "dodajGrupe" && (
                             <KindergartenGroupSearchForm groups={groups} />

@@ -660,3 +660,33 @@ form button:hover {
     flex: 1;                /* oba dugmeta iste širine */
 }
 
+/* Stil za labelu "Status" */
+.modal-content label {
+    display: inline-block;
+    margin-right: 8px; /* blago odaljen od padajućeg menija */
+    font-weight: 500;
+    color: #333;
+}
+
+/* Stil za select (padajući meni) */
+.modal-content select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fafafa;
+    font-size: 14px;
+    color: #333;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover i fokus efekti da bude u skladu sa ostatkom dizajna */
+.modal-content select:hover {
+    border-color: #888;
+}
+
+.modal-content select:focus {
+    border-color: #4a90e2; /* plava nijansa kao ostatak dizajna */
+    box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+    outline: none;
+}
+
